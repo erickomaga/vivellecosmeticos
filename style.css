@@ -1,0 +1,98 @@
+/* Resets e Tipografia */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: default;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Ocultar barra de rolagem */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Cursor Focal Personalizado */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #C25975;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(194, 89, 117, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+/* Círculos de Contato */
+.contact-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 1px solid #F7B5C4;
+  background-color: #FFF0F3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C25975;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(247, 181, 196, 0.25);
+}
+
+.contact-circle:hover {
+  background-color: #C25975;
+  border-color: #C25975;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Efeito Marquee */
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-content {
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Carrossel Estilo Instagram */
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+  background-color: #C25975;
+  width: 8px;
+  height: 8px;
+}

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vivelle — Haute Botanique & Cosmétique</title>
+  
+  <!--Fav Icon-->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- SEO -->
+  <meta name="description" content="Vivelle Haute Botanique: Cuidados com a pele de luxo formulados com biotecnologia botânica.">
+  
+  <!-- CDNs: TailwindCSS, Three.js e GSAP -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#FCD9E0] text-[#4A1525] overflow-x-hidden selection:bg-[#C25975] selection:text-white">
+
+  <!-- Canvas Three.js (Fundo Dinâmico Otimizado) -->
+  <canvas id="webgl-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+
+  <!-- Cursor Personalizado -->
+  <div id="cursor-dot" class="cursor-dot hidden md:block"></div>
+  <div id="cursor-ring" class="cursor-ring hidden md:block"></div>
+
+  <!-- NAVEGAÇÃO SUPERIOR -->
+  <header class="fixed top-0 left-0 w-full z-50 px-8 py-4 flex justify-between items-center backdrop-blur-md bg-[#FCD9E0]/80 border-b border-[#F7B5C4]">
+    <a href="#" class="flex items-center gap-3">
+      <img src="imgs/V preto.png" alt="Vivelle Logo" class="h-10 w-auto object-contain" />
+      <span class="font-serif text-2xl font-bold tracking-tight text-[#C25975] hidden sm:inline">VIVELLE</span>
+    </a>
+
+    <nav class="hidden md:flex space-x-10 text-xs uppercase tracking-[0.25em] font-semibold text-[#6E2237]">
+      <a href="#camada-0" class="nav-link hover:text-[#C25975] transition-colors">00. Início</a>
+      <a href="#camada-1" class="nav-link hover:text-[#C25975] transition-colors">01. Coleção</a>
+      <a href="#camada-2" class="nav-link hover:text-[#C25975] transition-colors">02. Manifesto</a>
+      <a href="#camada-3" class="nav-link hover:text-[#C25975] transition-colors">03. Contato</a>
+    </nav>
+    <button id="mobile-toggle" class="md:hidden text-xs uppercase tracking-widest text-[#C25975] font-bold">Menu</button>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <div id="mobile-drawer" class="fixed inset-0 bg-[#FCD9E0] z-40 flex flex-col justify-center items-center px-8 space-y-8 text-3xl font-serif opacity-0 pointer-events-none transition-all duration-500 text-[#C25975]">
+    <img src="imgs/V branco.png" alt="Vivelle Logo" class="h-16 w-auto mb-4 object-contain" />
+    <a href="#camada-0" class="mobile-item">00. Início</a>
+    <a href="#camada-1" class="mobile-item">01. Coleção</a>
+    <a href="#camada-2" class="mobile-item">02. Manifesto</a>
+    <a href="#camada-3" class="mobile-item">03. Contato</a>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div id="viewport-content" class="relative z-10">
+
+    <!-- HERO SECTION -->
+    <section id="camada-0" class="h-screen w-full flex flex-col justify-center items-center text-center px-6 relative">
+      <div class="max-w-4xl space-y-6 flex flex-col items-center">
+        <img src="imgs/V preto.png" alt="Vivelle Logo Emblema" class="h-28 md:h-36 w-auto object-contain drop-shadow-sm mb-2" />
+        
+        <span class="text-xs uppercase tracking-[0.4em] text-[#C25975] font-semibold bg-[#FFF0F3] px-4 py-1.5 rounded-full inline-block border border-[#F7B5C4]">Haute Botanique &amp; Cosmétique</span>
+        <h1 class="font-serif text-5xl md:text-8xl tracking-tight leading-none text-balance text-[#C25975]">
+          A Ciência da Beleza Pura
+        </h1>
+        <p class="text-sm md:text-base text-[#6E2237]/80 font-light max-w-md mx-auto">
+          Fórmulas botânicas de alta precisão desenvolvidas para renovar, hidratar e destacar o seu brilho natural.
+        </p>
+      </div>
+
+      <!-- Guia de Rolagem -->
+      <div class="absolute bottom-10 flex flex-col items-center space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-[#C25975] font-semibold">Descobrir</span>
+        <div class="w-[2px] h-12 bg-gradient-to-b from-[#C25975] to-transparent animate-pulse"></div>
+      </div>
+    </section>
+
+    <!-- PRODUTOS / COLEÇÃO (Grade Simétrica Limpa & Organizada) -->
+    <section id="camada-1" class="min-h-screen w-full py-32 px-6 md:px-16 flex flex-col justify-center">
+      <div class="mb-16 text-center md:text-left">
+        <span class="text-xs uppercase tracking-[0.3em] text-[#C25975] font-semibold">01 / Coleção Exclusiva</span>
+        <h2 class="font-serif text-4xl md:text-6xl tracking-tight mt-2 text-[#C25975]">Nossos Cosméticos</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 items-start">
+        
+        <!-- PRODUTO 1: ESFOLIANTE -->
+        <div class="space-y-4 orbit-card" data-speed="0.8">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/esfoliantes/1.jpeg" alt="Esfoliante Vivelle 1" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/esfoliantes/2.jpeg" alt="Esfoliante Vivelle 2" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/esfoliantes/3.jpeg" alt="Esfoliante Vivelle 3" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/esfoliantes/4.jpeg" alt="Esfoliante Vivelle 4" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/esfoliantes/5.jpeg" alt="Esfoliante Vivelle 5" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/esfoliantes/6.jpeg" alt="Esfoliante Vivelle 6" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Esfoliante Botânico Veludo</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 32,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Renovação celular suave com cristais naturais e óleos nutritivos.</p>
+        </div>
+
+        <!-- PRODUTO 2: SÉRUM FACIAL -->
+        <div class="space-y-4 orbit-card" data-speed="1.1">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/serum.jpeg" alt="Sérum Vivelle" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Sérum Facial Iluminador</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 59,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Concentrado nutritivo que repara a barreira cutânea e devolve o viço natural.</p>
+        </div>
+
+        <!-- PRODUTO 3: HIDRATANTE FACIAL -->
+        <div class="space-y-4 orbit-card" data-speed="0.9">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/hidratante facial.jpeg" alt="Hidratante Facial Vivelle" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Hidratante Facial Toque de Seda</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 65,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Fórmula leve de rápida absorção para maciez e hidratação diária do rosto.</p>
+        </div>
+
+        <!-- PRODUTO 4: HIDRATANTE CORPORAL -->
+        <div class="space-y-4 orbit-card" data-speed="1.0">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/hidratante corporal/1.jpeg" alt="Hidratante Corporal Vivelle 1" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/hidratante corporal/2.jpeg" alt="Hidratante Corporal Vivelle 2" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/hidratante corporal/3.jpeg" alt="Hidratante Corporal Vivelle 3" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/hidratante corporal/4.jpeg" alt="Hidratante Corporal Vivelle 4" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/hidratante corporal/5.png" alt="Hidratante Corporal Vivelle 5" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/hidratante corporal/6.jpeg" alt="Hidratante Corporal Vivelle 6" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Hidratante Corporal Veludo</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 78,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Nutrição intensa e toque aveludado para todo o corpo com perfume suave.</p>
+        </div>
+
+        <!-- PRODUTO 5: KIT SABONETES -->
+        <div class="space-y-4 orbit-card" data-speed="1.2">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/sabonete/1.jpeg" alt="Kit Sabonete Vivelle 1" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/sabonete/2.jpeg" alt="Kit Sabonete Vivelle 2" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/sabonete/3.jpeg" alt="Kit Sabonete Vivelle 3" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/sabonete/4.jpeg" alt="Kit Sabonete Vivelle 4" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/sabonete/5.jpeg" alt="Kit Sabonete Vivelle 5" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/sabonete/6.jpeg" alt="Kit Sabonete Vivelle 6" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Kit Sabonetes Artesanais (3 un)</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 23,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Trio de sabonetes com extratos florais finos e higienização delicada.</p>
+        </div>
+
+        <!-- PRODUTO 6: MÁSCARA FACIAL -->
+        <div class="space-y-4 orbit-card" data-speed="1.0">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/mascara.jpeg" alt="Máscara de Carvão Vivelle" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Máscara Facial de Carvão Ativado</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 40,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Desintoxicação profunda, remoção de impurezas e controle de oleosidade.</p>
+        </div>
+
+        <!-- PRODUTO 7: PROTETOR SOLAR FACIAL -->
+        <div class="space-y-4 orbit-card" data-speed="0.9">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/protetor solar facial.jpeg" alt="Protetor Solar Facial Vivelle" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Protetor Solar Facial</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 61,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Alta proteção UVA/UVB com toque seco e efeito aveludado.</p>
+        </div>
+
+        <!-- PRODUTO 8: PROTETOR SOLAR CORPORAL -->
+        <div class="space-y-4 orbit-card" data-speed="1.1">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/protetor solar corporal.jpeg" alt="Protetor Solar Corporal Vivelle" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Protetor Solar Corporal</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 77,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Proteção de amplo espectro para o corpo com resistência à água.</p>
+        </div>
+
+        <!-- PRODUTO 9: VELA AROMÁTICA CAPIM LIMÃO -->
+        <div class="space-y-4 orbit-card" data-speed="0.8">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/vela aromatica.jpeg" alt="Vela Aromática Capim Limão Vivelle" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Vela Aromática Capim Limão</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 39,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Cera vegetal pura com óleo essencial para uma atmosfera relaxante.</p>
+        </div>
+
+        <!-- PRODUTO 10: LINHA DE TRATAMENTO CAPILAR -->
+        <div class="space-y-4 orbit-card" data-speed="1.2">
+          <div class="insta-carousel relative overflow-hidden aspect-[4/5] rounded-2xl bg-[#FFF0F3] group border border-[#F7B5C4] shadow-sm select-none">
+            <div class="carousel-track flex h-full w-full transition-transform duration-500 ease-out">
+              <img src="imgs/produtos/tratamento capilar/1.jpeg" alt="Linha de Tratamento Capilar Vivelle 1" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/tratamento capilar/2.jpeg" alt="Linha de Tratamento Capilar Vivelle 2" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/tratamento capilar/3.jpeg" alt="Linha de Tratamento Capilar Vivelle 3" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/tratamento capilar/4.jpeg" alt="Linha de Tratamento Capilar Vivelle 4" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/tratamento capilar/5.jpeg" alt="Linha de Tratamento Capilar Vivelle 5" class="w-full h-full object-cover flex-shrink-0">
+              <img src="imgs/produtos/tratamento capilar/6.jpeg" alt="Linha de Tratamento Capilar Vivelle 6" class="w-full h-full object-cover flex-shrink-0">
+            </div>
+            <button class="prev-btn absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0 z-20">&lt;</button>
+            <button class="next-btn absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-[#C25975] flex items-center justify-center font-bold text-sm shadow-md hover:bg-white transition-opacity opacity-0 group-hover:opacity-100 z-20">&gt;</button>
+            <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-1.5 z-20"></div>
+
+            <div class="absolute inset-0 bg-[#C25975]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+              <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="pointer-events-auto w-full py-3 text-center bg-[#C25975] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A3435D] transition-colors rounded-lg shadow-lg">
+                Comprar no Instagram &rarr;
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <h3 class="font-serif text-2xl text-[#C25975]">Linha de Tratamento Capilar</h3>
+            <span class="text-base font-semibold text-[#C25975]">R$ 270,00</span>
+          </div>
+          <p class="text-xs text-[#6E2237]/70 font-light">Ritual completo de restauração capilar para fios fortes, brilhantes e sedosos.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MANIFESTO MARQUEE -->
+    <section id="camada-2" class="py-24 bg-[#C25975] text-[#FFF0F3] overflow-hidden">
+      <div class="mb-12 px-6 md:px-16 flex justify-between items-center">
+        <span class="text-xs uppercase tracking-[0.3em] text-[#FCD9E0] font-semibold">02 / Filosofia Vivelle</span>
+        <img src="imgs/V branco.png" alt="Vivelle Monograma" class="h-8 w-auto opacity-80" />
+      </div>
+
+      <div class="marquee-wrapper whitespace-nowrap">
+        <div class="marquee-content font-serif text-6xl md:text-9xl tracking-tight inline-block">
+          Fórmula Vegana &bull; Esfoliação Delicada &bull; Sabonetes Artesanais &bull; Cuidado Diário &bull; Pureza Botânica &bull; 
+        </div>
+      </div>
+
+      <div class="max-w-xl mx-auto px-6 mt-16 text-center space-y-4">
+        <p class="text-sm md:text-base font-light text-[#FFF0F3]/90 leading-relaxed">
+          Na Vivelle, selecionamos os melhores ingredientes da natureza para criar rituais de beleza limpos, gentis com a sua pele e altamente eficazes.
+        </p>
+      </div>
+    </section>
+
+    <!-- NÚCLEO DE CONTATO -->
+    <section id="camada-3" class="min-h-screen w-full py-32 px-6 flex flex-col justify-center items-center text-center relative">
+      <div class="max-w-2xl space-y-8 z-10 flex flex-col items-center">
+        <span class="text-xs uppercase tracking-[0.3em] text-[#C25975] font-semibold bg-[#FFF0F3] px-4 py-1.5 rounded-full border border-[#F7B5C4] inline-block">03 / Contato</span>
+        <h2 class="font-serif text-4xl md:text-7xl text-[#C25975]">Fale Conosco</h2>
+        <p class="text-sm md:text-base text-[#6E2237]/80 font-light">
+          Faça seus pedidos e acompanhe nossos lançamentos direto no nosso Instagram oficial.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-6 pt-6">
+          <a href="mailto:contato@vivelle.com" class="contact-circle">
+            <span class="text-xs uppercase tracking-widest font-semibold">E-mail</span>
+          </a>
+          <a href="https://www.instagram.com/vivelle.cosmeticos/" target="_blank" class="contact-circle">
+            <span class="text-xs uppercase tracking-widest font-semibold">Instagram</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer class="relative z-10 border-t border-[#F7B5C4] py-8 px-8 text-xs text-[#6E2237]/70 flex flex-col md:flex-row justify-between items-center gap-4 bg-[#FCD9E0]">
+    <div class="flex items-center gap-3">
+      <img src="imgs/V preto.png" alt="Vivelle Logo" class="h-6 w-auto object-contain" />
+      <span>&copy; <span id="year"></span> VIVELLE. Todos os direitos reservados.</span>
+    </div>
+    <div class="uppercase tracking-widest">Haute Botanique &bull; Beleza &amp; Cosméticos</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
